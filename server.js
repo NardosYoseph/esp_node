@@ -9,7 +9,7 @@ const esp32CamDDNS = 'nardos123.ddns.net';  // Replace with your actual ESP32-CA
 
 app.get('/video', (req, res) => {
   res.writeHead(200, {
-    'Content-Type': 'multipart/x-mixed-replace; boundary=--myboundary',
+    'Content-Type': 'image/jpeg',
     'Connection': 'keep-alive',
     'Cache-Control': 'no-cache',
     'Pragma': 'no-cache'
@@ -19,10 +19,14 @@ app.get('/video', (req, res) => {
   const stream = new rtsp.FFMpeg({ input: rtspUrl, resolution: '640x480' });
 
   stream.on('data', (data) => {
+    try{
     res.write('--myboundary\r\n');
     res.write('Content-Type: image/jpeg\r\n');
     res.write(`Content-Length: ${data.length}\r\n\r\n`);
     res.write(data, 'binary');
+  } catch(error) {
+      console.error('Error writing to response:', error);
+    }
   });
 
   req.on('close', () => {
