@@ -17,7 +17,7 @@ app.get('/video', (req, res) => {
   });
 
   const rtspUrl = `rtsp://${esp32CamDDNS}:554/mjpeg/1`;
-  const stream = new FFMpeg({ input: rtspUrl, resolution: '640x480' });
+  const stream = new rtsp.FFMpeg({ input: rtspUrl, resolution: '640x480' });
  
   // const stream = new (require('rtsp-stream').FFMpeg)({
   //   input: 'rtsp://nardos123.ddns.net',
