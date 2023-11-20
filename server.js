@@ -1,9 +1,9 @@
 const express = require('express');
-const http = require('http');
+const https = require('https');
 const WebSocket = require('ws');
 
 const app = express();
-const server = http.createServer(app);
+const server = https.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 const port = 3000;
