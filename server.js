@@ -1,10 +1,10 @@
-import express from 'express';
-import { createServer } from 'http';
-import { Server, OPEN } from 'ws';
+const express = require('express');
+const http = require('http');
+const WebSocket = require('ws');
 
 const app = express();
-const server = createServer(app);
-const wss = new Server({ server });
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 
 const port = 3000;
 
@@ -21,7 +21,7 @@ wss.on('connection', (ws) => {
   ws.on('message', (frameData) => {
     // Broadcast the frame to all connected clients
     wss.clients.forEach((client) => {
-      if (client !== ws && client.readyState === OPEN) {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(frameData, { binary: true });
       }
     });
