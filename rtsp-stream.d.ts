@@ -1,6 +1,5 @@
 declare module 'rtsp-stream' {
-    const FFMpeg: any; // You can replace 'any' with more specific types if known
-  
-    export { FFMpeg };
-  }
-  
+  // Define your module types here, or mark everything as 'any'
+  const FFMpeg: any;
+  export { FFMpeg };
+}

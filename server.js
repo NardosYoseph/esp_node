@@ -1,48 +1,34 @@
-const express = require('express');
-const http = require('http');
-const rtsp = require('rtsp-stream');
-const { FFMpeg } = require('rtsp-stream');
-const { createFfmpegStream } = require('rtsp-stream');
+import express from 'express';
+import { createServer } from 'http';
+import { Server, OPEN } from 'ws';
 
 const app = express();
-const server = http.createServer(app);
+const server = createServer(app);
+const wss = new Server({ server });
 
-const esp32CamDDNS = 'nardos123.ddns.net';  // Replace with your actual ESP32-CAM DDNS domain
+const port = 3000;
 
+// Route to serve the HTML page with video player
 app.get('/video', (req, res) => {
-  res.writeHead(200, {
-    'Content-Type': 'image/jpeg',
-    'Connection': 'keep-alive',
-    'Cache-Control': 'no-cache',
-    'Pragma': 'no-cache'
-  });
+  res.sendFile(__dirname + '/index.html');
+});
 
-  const rtspUrl = `rtsp://${esp32CamDDNS}:554/mjpeg/1`;
-  const stream = createFfmpegStream({ input: rtspUrl, resolution: '640x480' });
- 
-  // const stream = new (require('rtsp-stream').FFMpeg)({
-  //   input: 'rtsp://nardos123.ddns.net',
-  //   resolution: '640x480',
-  // });
-  
+// WebSocket connection handling
+wss.on('connection', (ws) => {
+  console.log('Client connected');
 
-  stream.on('data', (data) => {
-    try{
-    res.write('--myboundary\r\n');
-    res.write('Content-Type: image/jpeg\r\n');
-    res.write(`Content-Length: ${data.length}\r\n\r\n`);
-    res.write(data, 'binary');
-  } catch(error) {
-      console.error('Error writing to response:', error);
-    }
-  });
-
-  req.on('close', () => {
-    stream.stop();
+  // Listen for video frames from ESP32-CAM
+  ws.on('message', (frameData) => {
+    // Broadcast the frame to all connected clients
+    wss.clients.forEach((client) => {
+      if (client !== ws && client.readyState === OPEN) {
+        client.send(frameData, { binary: true });
+      }
+    });
   });
 });
 
-const port = 3000;
+// Start the server
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

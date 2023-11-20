@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Video Stream</title>
+</head>
+<body>
+  <video id="video" width="640" height="480" autoplay playsinline></video>
+
+  <script>
+    const video = document.getElementById('video');
+    const ws = new WebSocket('ws://localhost:3000'); // Replace with your server's address
+
+    ws.binaryType = 'arraybuffer';
+
+    ws.onmessage = (event) => {
+      const frameData = new Uint8Array(event.data);
+      const blob = new Blob([frameData], { type: 'image/jpeg' });
+      const imageUrl = URL.createObjectURL(blob);
+
+      video.src = imageUrl;
+    };
+  </script>
+</body>
+</html>
