@@ -1,6 +1,6 @@
 const express = require('express');
 const https = require('https');
-const WebSocket = require('wss');
+const WebSocket = require('ws');
 
 const app = express();
 const server = https.createServer(app);
