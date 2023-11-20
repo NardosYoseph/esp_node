@@ -1,10 +1,10 @@
 const express = require('express');
-const https = require('http');
-const WebSocket = require('ws');
+const https = require('https');
+const WebSocket = require('wss');
 
 const app = express();
 const server = https.createServer(app);
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({ server ,secure:true});
 
 const port = 3000;
 app.use(express.static(__dirname));
