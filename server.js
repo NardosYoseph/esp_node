@@ -7,7 +7,7 @@ const server = https.createServer(app);
 const wss = new WebSocket.Server({ server ,secure:true});
 
 const port = process.env.PORT||3000;
-app.use(express.static(__dirname));
+app.use('/.well-known',express.static(__dirname+'/.well-known'));
 // Route to serve the HTML page with video player
 app.get('/video', (req, res) => {
   res.sendFile(__dirname + '/index.html');
