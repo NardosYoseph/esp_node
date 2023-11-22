@@ -1,9 +1,16 @@
 const express = require('express');
-const http = require('http');
+const https = require('https');
 const WebSocket = require('ws');
-
+const path = require('path');
+const fs = require('fs');
+const privateKey = fs.readFileSync('key.pem', 'utf8');
+const certificate = fs.readFileSync('cert.pem', 'utf8');
+const credentials = { key: privateKey, cert: certificate };
 const app = express();
-const server = http.createServer(app);
+// Create an HTTPS server
+const server = https.createServer(credentials, app);
+
+
 const wss = new WebSocket.Server({ server});
 
 const port = process.env.PORT||3000;

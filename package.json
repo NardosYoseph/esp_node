@@ -1,10 +1,12 @@
 {
   "dependencies": {
     "express": "^4.18.2",
+    "fs": "^0.0.1-security",
     "http": "^0.0.1-security",
     "https": "^1.0.0",
     "node-rtsp-stream": "^0.0.9",
     "nyc": "^15.1.0",
+    "path": "^0.12.7",
     "rtsp-stream": "^1.0.0",
     "ws": "^8.14.2",
     "wss": "^0.0.2"
