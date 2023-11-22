@@ -1,13 +1,13 @@
 const express = require('express');
-const https = require('http');
+const http = require('http');
 const WebSocket = require('ws');
 
 const app = express();
-const server = https.createServer(app);
-const wss = new WebSocket.Server({ server ,secure:true});
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server});
 
 const port = process.env.PORT||3000;
-app.use('/.well-known',express.static(__dirname+'/.well-known'));
+app.use(express.static(__dirname));
 // Route to serve the HTML page with video player
 app.get('/video', (req, res) => {
   res.sendFile(__dirname + '/index.html');
