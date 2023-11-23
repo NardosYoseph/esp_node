@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 // const privateKey = fs.readFileSync('key_no_passphrase.pem', 'utf8');
 // const certificate = fs.readFileSync('cert.pem', 'utf8');
-const credentials = { key: privateKey, cert: certificate };
+//const credentials = { key: privateKey, cert: certificate };
 const app = express();
 
 const server = http.createServer( app);
