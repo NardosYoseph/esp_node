@@ -16,7 +16,7 @@ const wss = new WebSocket.Server({ server});
 const port = process.env.PORT||443;
 app.use(express.static(__dirname));
 
-app.get('/video', (req, res) => {
+app.ws('/video', (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
