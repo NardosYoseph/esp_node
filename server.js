@@ -16,7 +16,13 @@ expressWs(app);
 app.use(express.static(__dirname));
 app.ws('/video', (ws, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));
-});
+  fs.readFile(path.join(__dirname, 'index.html'), 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading HTML file:', err);
+      return;
+    }
+    ws.send(data);
+});});
 
 
 wss.on('connection', (ws) => {
