@@ -8,12 +8,12 @@ const app = express();
 
 const server = http.createServer( app);
 
-
 const wss = new WebSocket.Server({ server});
 
 const port = process.env.PORT||443;
 expressWs(app);
 app.use(express.static(__dirname));
+
 app.ws('/video', (ws, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));
   fs.readFile(path.join(__dirname, 'index.html'), 'utf8', (err, data) => {
