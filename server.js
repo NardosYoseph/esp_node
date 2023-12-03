@@ -10,7 +10,7 @@ const server = http.createServer( app);
 
 const wss = new WebSocket.Server({ noServer: true});
 
-const port = process.env.PORT||3000;
+const port = process.env.PORT||443;
 expressWs(app);
 app.use(express.static(__dirname));
 
