@@ -10,7 +10,7 @@ const server = http.createServer( app);
 
 const wss = new WebSocket.Server({ server});
 
-const port = process.env.PORT||443;
+const port =443;
 expressWs(app);
 app.use(express.static(__dirname));
 
@@ -44,11 +44,11 @@ wss.on('connection', (ws) => {
   });
  
 });
-server.on('upgrade', (request, socket, head) => {
-  wss.handleUpgrade(request, socket, head, (ws) => {
-    wss.emit('connection', ws, request);
-  });
-});
+// server.on('upgrade', (request, socket, head) => {
+//   wss.handleUpgrade(request, socket, head, (ws) => {
+//     wss.emit('connection', ws, request);
+//   });
+// });
 
 server.listen(port, () => {
   console.log(`Server is running on port ${server.address().port}`);
