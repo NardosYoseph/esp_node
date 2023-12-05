@@ -8,7 +8,7 @@ const app = express();
 
 const server = http.createServer( app);
 
-const wss = new WebSocket.Server({ server});
+const wss = new WebSocket.Server({ noServer:true});
 
 const port =process.env.PORT||443;
 expressWs(app);
