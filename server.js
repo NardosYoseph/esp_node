@@ -8,10 +8,10 @@ const app = express();
 
 const server = http.createServer( app);
 
-const wss = new WebSocket.Server({ server});
+const wss = new WebSocket.Server({server});
 
-const port =process.env.PORT||443;
-expressWs(app);
+const port = process.env.PORT||443;
+//expressWs(app);
 app.use(express.static(__dirname));
 
 app.ws('/video', (ws, res) => {

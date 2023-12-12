@@ -17,5 +17,8 @@
     "rtsp-stream": "^1.0.0",
     "ws": "^8.14.2",
     "wss": "^0.0.2"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.10"
   }
 }
