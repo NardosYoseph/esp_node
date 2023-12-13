@@ -1,29 +1,28 @@
 const express = require('express');
-const http = require('http');
+const https = require('https');
 const WebSocket = require('ws');
 const expressWs = require('express-ws');
 const path = require('path');
 const fs = require('fs');
 const app = express();
 
-const server = http.createServer((req, res) => {
-  // Handle HTTP requests (if needed)
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('WebSocket server is running.');
-});
+const server = https.createServer({
+  cert: fs.readFileSync('certificate.pem'),
+  key: fs.readFileSync('private-key.pem'),
+}, app);
 
 const ws = new WebSocket.Server({server});
 
 const port = process.env.PORT||443;
-//expressWs(app);
+expressWs(app);
 app.use(express.static(__dirname));
 
-// app.ws('/video', (ws, res) => {
-//   res.sendFile(path.join(__dirname + '/index.html'));
-//   ws.on('message', (frameData) => {
-//     ws.send(frameData, { binary: true });
-//   });
-// });
+app.ws('/video', (ws, res) => {
+  res.sendFile(path.join(__dirname + '/index.html'));
+  ws.on('message', (frameData) => {
+    ws.send(frameData, { binary: true });
+  });
+});
 
 
 ws.on('connection', (ws) => {
