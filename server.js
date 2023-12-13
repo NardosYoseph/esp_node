@@ -11,7 +11,7 @@ const server = https.createServer({
   key: fs.readFileSync('private-key.pem'),
 }, app);
 
-const ws = new WebSocket.Server({server});
+const wss = new WebSocket.Server({server});
 
 const port = process.env.PORT||443;
 expressWs(app);
@@ -25,7 +25,7 @@ app.ws('/video', (ws, res) => {
 });
 
 
-ws.on('connection', (ws) => {
+wss.on('connection', (ws) => {
 
   console.log('WebSocket connection established');
  
