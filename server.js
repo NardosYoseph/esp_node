@@ -1,7 +1,7 @@
 const express = require('express');
 const https = require('https');
 const WebSocket = require('ws');
-const expressWs = require('express-ws');
+const expressWs = require('express-ws')(express());
 const path = require('path');
 const fs = require('fs');
 const app = express();
@@ -14,11 +14,11 @@ const server = https.createServer({
 const wss = new WebSocket.Server({server});
 
 const port = process.env.PORT||443;
-expressWs(app);
+//expressWs(app);
 app.use(express.static(__dirname));
 
-app.ws('/video', (ws, res) => {
-  res.sendFile(path.join(__dirname + '/index.html'));
+app.ws('/video', (ws) => {
+ // res.sendFile(path.join(__dirname + '/index.html'));
   ws.on('message', (frameData) => {
     ws.send(frameData, { binary: true });
   });
