@@ -1,7 +1,7 @@
 const express = require('express');
 const https = require('https');
 const WebSocket = require('ws');
-const expressWs = require('express-ws')(express());
+const expressWs = require('express-ws');
 const path = require('path');
 const fs = require('fs');
 const app = express();
@@ -11,24 +11,19 @@ const server = https.createServer({
   key: fs.readFileSync('private-key.pem'),
 }, app);
 
-const wss = new WebSocket.Server({server});
-
+//const wss = new WebSocket.Server({server});
+expressWs(app, server);
 const port = process.env.PORT||443;
 //expressWs(app);
 app.use(express.static(__dirname));
 
 app.ws('/video', (ws) => {
+  console.log('WebSocket connection established for /video');
  // res.sendFile(path.join(__dirname + '/index.html'));
   ws.on('message', (frameData) => {
     ws.send(frameData, { binary: true });
   });
-});
 
-
-wss.on('connection', (ws) => {
-
-  console.log('WebSocket connection established');
- 
   ws.on('message', (frameData) => {
     if (frameData instanceof Buffer) {
       wss.clients.forEach((client) => {
@@ -45,8 +40,9 @@ wss.on('connection', (ws) => {
       console.error('Received non-binary data. Ignoring.');
     }
   });
- 
 });
+ 
+
 // server.on('upgrade', (request, socket, head) => {
 //   wss.handleUpgrade(request, socket, head, (ws) => {
 //     wss.emit('connection', ws, request);
